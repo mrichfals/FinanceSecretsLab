@@ -1,0 +1,15 @@
+# Build output
+bin/
+obj/
+
+# Config & Secrets
+appsettings.json
+appsettings.Development.json
+.env
+
+# IDE/Editor
+.vscode/
+*.user
+*.suo
+*.rsuser
+

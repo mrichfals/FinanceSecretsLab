@@ -1,0 +1,75 @@
+﻿@page
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-5">Finance Secrets Lab 🏦</h1>
+    <p class="lead">Eksperimen interaktif untuk memahami risiko penyimpanan <strong>secrets</strong> dalam aplikasi finansial.</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6 offset-md-3">
+
+        <!-- Level Low -->
+        <div class="card shadow mb-4 border-danger">
+            <div class="card-body">
+                <h5 class="card-title text-danger">Level Low</h5>
+                <p class="card-text">
+                    Sebuah simulasi di mana aplikasi frontend bisa berjalan,
+                    tetapi ada hal menarik yang bisa ditemukan bila diperhatikan lebih dalam.
+                </p>
+                <a href="/Levels/Low" class="btn btn-danger w-100">Coba Level Low</a>
+            </div>
+        </div>
+
+        <!-- Level Medium -->
+        <div class="card shadow border-warning">
+            <div class="card-body">
+                <h5 class="card-title text-warning">Level Medium</h5>
+                <p class="card-text">
+                    Aplikasi berjalan normal, namun tetap menyimpan sesuatu dengan cara yang kurang tepat.
+                    Coba perhatikan bagaimana backend bekerja.
+                </p>
+                <a href="/Levels/Medium" class="btn btn-warning w-100">Coba Level Medium</a>
+            </div>
+        </div>
+
+        <!-- Level High -->
+        <div class="card shadow border-primary mt-4">
+            <div class="card-body">
+                <h5 class="card-title text-primary">Level High</h5>
+                <p class="card-text">
+                    Secret dipindahkan ke file konfigurasi.
+                    Tampak lebih rapi, tapi apakah benar-benar aman?
+                </p>
+                <a href="/Levels/High" class="btn btn-primary w-100">Coba Level High</a>
+            </div>
+        </div>
+
+        <!-- Best Practice -->
+        <div class="card shadow border-success mt-4">
+            <div class="card-body">
+                <h5 class="card-title text-success">Best Practice – Environment Variable</h5>
+                <p class="card-text">
+                    Secret tidak disimpan di kode atau config, melainkan diatur di environment server.
+                </p>
+                <a href="/Levels/Env" class="btn btn-success w-100">Coba Best Practice</a>
+            </div>
+        </div>
+
+        <!-- Best Practice – Vault -->
+        <div class="card shadow border-dark mt-4">
+            <div class="card-body">
+                <h5 class="card-title text-dark">Best Practice – HashiCorp Vault</h5>
+                <p class="card-text">
+                    Secret tidak disimpan di kode maupun file konfigurasi.
+                    Aplikasi mengambil API Key langsung dari <strong>Vault</strong> secara aman pada saat runtime.
+                </p>
+                <a href="/Levels/Vault" class="btn btn-dark w-100">Coba Best Practice Vault</a>
+            </div>
+        </div>
+
+    </div>
+</div>

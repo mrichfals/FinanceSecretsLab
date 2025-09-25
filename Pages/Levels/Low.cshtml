@@ -1,0 +1,31 @@
+﻿@page
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Level Low";
+}
+
+<h2 class="mb-4">Level Low ❌</h2>
+<p>
+    Kalkulator pinjaman sederhana.
+    Perhatikan bagaimana aplikasi ini berkomunikasi dengan server.
+</p>
+
+<div class="card p-4 shadow-lg mb-4 bg-white">
+    <div class="mb-3">
+        <label class="form-label">Principal (USD)</label>
+        <input type="number" id="principal" class="form-control" placeholder="10000" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Interest (%)</label>
+        <input type="number" id="interest" class="form-control" placeholder="10" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tenor (Months)</label>
+        <input type="number" id="months" class="form-control" placeholder="12" />
+    </div>
+    <button onclick="calculateLoan()" class="btn btn-danger w-100">Hitung Loan</button>
+</div>
+
+<div id="result"></div>
+
+<script src="~/js/app.js"></script>

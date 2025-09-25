@@ -1,0 +1,93 @@
+﻿@page
+@using System.Net.Http
+@using System.Text.Json
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Level High - Config File Loan App";
+}
+
+@functions {
+    public class LoanResult
+    {
+        public decimal PrincipalUSD { get; set; }
+        public double InterestRate { get; set; }
+        public int Months { get; set; }
+        public double MonthlyPaymentUSD { get; set; }
+        public double MonthlyPaymentIDR { get; set; }
+        public decimal ExchangeRate { get; set; }
+    }
+
+    public LoanResult? Result { get; set; }
+    public string? ErrorMessage { get; set; }
+
+    public async Task OnGetAsync()
+    {
+        var principal = HttpContext.Request.Query["principal"];
+        var interest = HttpContext.Request.Query["interest"];
+        var months = HttpContext.Request.Query["months"];
+
+        if (!string.IsNullOrEmpty(principal) && !string.IsNullOrEmpty(interest) && !string.IsNullOrEmpty(months))
+        {
+            using var client = new HttpClient();
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            var url = $"{baseUrl}/api/LoanHigh/calculate?principal={principal}&interest={interest}&months={months}";
+
+            try
+            {
+                var response = await client.GetStringAsync(url);
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                Result = JsonSerializer.Deserialize<LoanResult>(response, options)!;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Gagal memanggil API Loan: {ex.Message}";
+            }
+        }
+    }
+}
+
+<h2 class="mb-4">Level High ❌</h2>
+<p>
+    Aplikasi membaca secret dari file konfigurasi.
+    Sekilas lebih rapi, namun tetap ada resiko bila file ikut tersebar.
+</p>
+
+<form class="card p-4 shadow-lg mb-4 bg-white" method="get">
+    <div class="mb-3">
+        <label class="form-label">Principal (USD)</label>
+        <input type="number" class="form-control" name="principal" value="@HttpContext.Request.Query["principal"]" placeholder="10000" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Interest (%)</label>
+        <input type="number" class="form-control" name="interest" value="@HttpContext.Request.Query["interest"]" placeholder="10" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tenor (Months)</label>
+        <input type="number" class="form-control" name="months" value="@HttpContext.Request.Query["months"]" placeholder="12" />
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Hitung Loan</button>
+</form>
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ErrorMessage
+    </div>
+}
+
+@if (Result != null)
+{
+    <h4 class="mt-4">📊 Hasil Perhitungan</h4>
+    <table class="table table-bordered table-striped mt-2 bg-white shadow-sm">
+        <tbody>
+            <tr><th>Principal (USD)</th><td>$@Result.PrincipalUSD</td></tr>
+            <tr><th>Bunga (%)</th><td>@Result.InterestRate%</td></tr>
+            <tr><th>Tenor (Bulan)</th><td>@Result.Months</td></tr>
+            <tr class="table-warning"><th>Cicilan / Bulan (USD)</th><td>$@Result.MonthlyPaymentUSD</td></tr>
+            <tr class="table-success"><th>Cicilan / Bulan (IDR)</th><td>Rp @Result.MonthlyPaymentIDR.ToString("N0")</td></tr>
+            <tr><th>Kurs USD → IDR</th><td>@Result.ExchangeRate</td></tr>
+        </tbody>
+    </table>
+}
